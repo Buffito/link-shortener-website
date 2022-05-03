@@ -1,7 +1,6 @@
 document.getElementById('url-button').addEventListener('click', () => {
     const userURL = document.querySelector('#url-field').value;
 
-    //console.log(userURL);
     document.querySelector('#url-field').value = "";
 
     fetch('https://api-ssl.bitly.com/v4/shorten', {
@@ -24,8 +23,16 @@ document.getElementById('url-button').addEventListener('click', () => {
                 link
             } = r;
 
-            console.log(link);
+            //console.log(link);
+            if(link){
+                document.querySelector('#shortened-url').innerHTML = link;
+                //simplecopy(link);
+            }
         });
+});
 
+
+document.getElementById('shortened-button').addEventListener('click', () => {
+    const link = document.querySelector('#shortened-url').innerHTML;
     simplecopy(link);
 });
