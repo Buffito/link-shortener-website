@@ -1,7 +1,5 @@
 document.getElementById('url-button').addEventListener('click', () => {
-    const userURL = document.querySelector('#url-field').value;
-
-    document.querySelector('#url-field').value = "";
+    let url = document.querySelector('#url-field').value;
 
     fetch('https://api-ssl.bitly.com/v4/shorten', {
             method: 'POST',
@@ -10,7 +8,7 @@ document.getElementById('url-button').addEventListener('click', () => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                long_url: userURL,
+                long_url: url,
                 domain: 'bit.ly'
             })
         })
@@ -23,16 +21,34 @@ document.getElementById('url-button').addEventListener('click', () => {
                 link
             } = r;
 
-            //console.log(link);
-            if(link){
+            if (link) {
                 document.querySelector('#shortened-url').innerHTML = link;
-                //simplecopy(link);
+                document.getElementById('shortened-url').hidden = false;
+                document.getElementById('shortened-button').hidden = false;
             }
+
         });
+
+
 });
 
-
 document.getElementById('shortened-button').addEventListener('click', () => {
-    const link = document.querySelector('#shortened-url').innerHTML;
+    let link = document.querySelector('#shortened-url').innerHTML;
     simplecopy(link);
+
+    document.querySelector('#url-field').value = "";
+    document.getElementById('shortened-url').hidden = true;
+    document.getElementById('shortened-button').hidden = true;
+
+    Toastify({
+        text: "Link copied!",
+        duration: 2000,
+        newWindow: true,
+        gravity: "bottom", // `top` or `bottom`
+        position: "center", // `left`, `center` or `right`
+        stopOnFocus: true, // Prevents dismissing of toast on hover
+        style: {
+          background: "#00b09b",
+        }
+      }).showToast();
 });
